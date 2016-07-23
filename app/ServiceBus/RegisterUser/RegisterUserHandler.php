@@ -3,8 +3,8 @@
 namespace App\ServiceBus\RegisterUser;
 
 use Auth;
-use App\User;
 use Validator;
+use App\Domain\User\User;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
