@@ -1,12 +1,13 @@
 <?php
 
-namespace App\ServiceBus\RegisterUser;
+namespace App\Service\Bus\Handler;
 
 use Auth;
 use Validator;
 use App\Domain\User\User;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use App\Service\Bus\Command\RegisterUserCommand;
 
 class RegisterUserHandler
 {

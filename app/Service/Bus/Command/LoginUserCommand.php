@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ServiceBus\RegisterUser;
+namespace App\Service\Bus\Command;
 
 use Illuminate\Http\Request;
 
-class RegisterUserCommand
+class LoginUserCommand
 {
     public $request;
     

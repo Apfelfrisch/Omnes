@@ -4,9 +4,9 @@ return [
     'fetch' => PDO::FETCH_CLASS,
     'default' => env('DB_CONNECTION', 'mysql'),
     'connections' => [
-        'sqlite' => [
+        'test' => [
             'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => database_path('test.sqlite'),
             'prefix' => '',
         ],
         'mysql' => [

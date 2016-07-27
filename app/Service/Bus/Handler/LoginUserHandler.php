@@ -1,11 +1,12 @@
 <?php
 
-namespace App\ServiceBus\LoginUser;
+namespace App\Service\Bus\Handler;
 
 use Auth;
 use Lang;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
+use App\Service\Bus\Command\LoginUserCommand;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class LoginUserHandler

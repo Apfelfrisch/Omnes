@@ -6,7 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RedirectsUsers;
-use App\ServiceBus\RegisterUser\RegisterUserCommand;
+use App\Service\Bus\Command\RegisterUserCommand;
 
 class RegisterController extends Controller
 {

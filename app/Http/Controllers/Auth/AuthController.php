@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\ServiceBus\LoginUser\LoginUserCommand;
+use App\Service\Bus\Command\LoginUserCommand;
 
 class AuthController extends Controller
 {
