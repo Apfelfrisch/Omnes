@@ -26,15 +26,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(GateContract $gate)
     {
         $this->registerPolicies($gate);
-        foreach ($this->permissions() as $permission) {
-            $gate->define($permission->name, function($user) use ($permission) {
-                return $user->hasRole($permission->roles);
-            });
-        }
-    }
-
-    private function permissions()
-    {
-        return Permission::with('roles')->get();
     }
 }

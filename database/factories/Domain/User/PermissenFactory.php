@@ -1,11 +1,11 @@
 <?php
 
 use Faker\Generator;
-use App\Domain\User\Permission;
+use App\Domain\Coordinator;
 
-$factory->define(Permission::class, function (Generator $faker) {
+$factory->define(Coordinator::class, function (Generator $faker) {
     return [
         'name' => $faker->name,
-        'lable' => $faker->sentence,
+        'description' => $faker->sentence,
     ];
 });
