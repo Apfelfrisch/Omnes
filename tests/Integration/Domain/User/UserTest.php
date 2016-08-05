@@ -3,11 +3,11 @@
 namespace Test\Integration\Domain\User;
 
 use TestCase;
-use App\Domain\User\User;
-use App\Domain\User\Role;
-use App\Domain\User\Permission;
+use App\Service\Acl\User\User;
+use App\Service\Acl\Role\Role;
+use App\Domain\League\League;
+use App\Service\Acl\Permission\Permission;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Domain\Coordinator;
 
 class UserTest extends TestCase
 {
@@ -17,24 +17,24 @@ class UserTest extends TestCase
     public function it_adds_a_to_a_role()
     {
         $role = factory(Role::class)->create();
-        $coordinator = factory(Coordinator::class)->create();
+        $league = factory(League::class)->create();
         $user = factory(User::class)->create();
 
-        $user->join($coordinator);
-        $user->addRole($role, $coordinator);
+        $user->join($league);
+        $user->addRole($role, $league);
         
-        $this->assertEquals($role->id, $user->rolesFor($coordinator)->first()->id);
+        $this->assertEquals($role->id, $user->rolesFor($league)->first()->id);
     }
 
     /** @test */
-    public function it_joins_a_coordinator()
+    public function it_joins_a_league()
     {
-        $coordinator = factory(Coordinator::class)->create();
+        $league = factory(League::class)->create();
         $user = factory(User::class)->create();
 
-        $user->join($coordinator);
+        $user->join($league);
 
-        $this->assertEquals($coordinator->id, $user->coordinators->first()->id);
+        $this->assertEquals($league->id, $user->leagues->first()->id);
     }
     
     /** @test */
@@ -43,18 +43,18 @@ class UserTest extends TestCase
         $permissionRoles = factory(Role::class, 2)->create();
         $forbiddenRoles = factory(Role::class, 2)->create();
 
-        $coordinator = factory(Coordinator::class)->create();
-        $foreignCoordinator = factory(Coordinator::class)->create();
+        $league = factory(League::class)->create();
+        $foreignLeague = factory(League::class)->create();
 
         $user = factory(User::class)->create();
         
-        $user->join($coordinator);
-        $user->addRole($permissionRoles[0], $coordinator);
+        $user->join($league);
+        $user->addRole($permissionRoles[0], $league);
 
-        $this->assertTrue($user->hasRoleFor($permissionRoles, $coordinator));
+        $this->assertTrue($user->hasRoleFor($permissionRoles, $league));
         $this->assertTrue($user->hasRole($permissionRoles[0]));
 
         $this->assertFalse($user->hasRole($forbiddenRoles));
-        $this->assertFalse($user->hasRoleFor($permissionRoles, $foreignCoordinator));
+        $this->assertFalse($user->hasRoleFor($permissionRoles, $foreignLeague));
     }
 }

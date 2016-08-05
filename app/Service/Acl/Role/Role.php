@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Service\Acl\Role;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Service\Acl\Permission\Permission;
 use Illuminate\Database\Eloquent\Collection;
 
 class Role extends Model

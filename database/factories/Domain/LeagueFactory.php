@@ -1,9 +1,9 @@
 <?php
 
 use Faker\Generator;
-use App\Domain\Coordinator;
+use App\Domain\League\League;
 
-$factory->define(Coordinator::class, function (Generator $faker) {
+$factory->define(League::class, function (Generator $faker) {
     return [
         'name' => $faker->name,
         'description' => $faker->sentence,

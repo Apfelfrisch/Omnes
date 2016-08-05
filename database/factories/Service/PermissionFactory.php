@@ -1,9 +1,9 @@
 <?php
 
 use Faker\Generator;
-use App\Domain\User\Role;
+use App\Service\Acl\Permission\Permission;
 
-$factory->define(Role::class, function (Generator $faker) {
+$factory->define(Permission::class, function (Generator $faker) {
     return [
         'name' => $faker->name,
         'lable' => $faker->sentence,

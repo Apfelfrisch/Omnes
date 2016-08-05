@@ -4,7 +4,7 @@ namespace App\Service\Bus\Handler;
 
 use Auth;
 use Validator;
-use App\Domain\User\User;
+use App\Service\Acl\User\User;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Service\Bus\Command\RegisterUserCommand;

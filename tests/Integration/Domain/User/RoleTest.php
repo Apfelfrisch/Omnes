@@ -3,8 +3,8 @@
 namespace Test\Integration\Domain\User;
 
 use TestCase;
-use App\Domain\User\Role;
-use App\Domain\User\Permission;
+use App\Service\Acl\Role\Role;
+use App\Service\Acl\Permission\Permission;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RoleTest extends TestCase

@@ -2,43 +2,38 @@
 
 namespace App\Service\Bus\Handler;
 
+use App\Domain\League\LeagueRepository;
+use App\Service\Acl\Repositories\UserRepository;
+use App\Service\Acl\Repositories\RoleRepository;
 use App\Service\Bus\Command\AddRoleToUserCommand;
-use App\Domain\User\Repositories\UserRepository;
-use App\Domain\User\Repositories\RoleRepository;
-use App\Domain\Repositories\CoordinatorRepository;
+use App\Service\Acl\UserRole\UserRole;
 
 class AddRoleToUserHandler
 {
     private $userRepo;
-    private $roleRepo;
-    private $coordinatorRepo;
     
-    public function __construct(UserRepository $userRepo, RoleRepository $roleRepo, CoordinatorRepository $coordinatorRepo)
+    public function __construct(UserRepository $userRepo)
     {
         $this->userRepo = $userRepo;
-        $this->roleRepo = $roleRepo;
-        $this->coordinatorRepo = $coordinatorRepo;
     }
 
     public function handle(AddRoleToUserCommand $command)
     {
-        $coordinator = $this->coordinatorRepo->find($command->coordinator_id);
-        $authUser = $this->userRepo->authUser();
-        if (! $authUser->hasRoleFor($this->getAdminRole(), $coordinator)) {
-            echo 'No Admin Role';
-        }
+        $userRole = new UserRole([
+            'user_id' => $command->user_id,
+            'role_id' => $command->role_id,
+            'league_id' => $command->league_id,
+        ]);
 
-        $user = $this->userRepo->find($command->user_id);
-        if (!$user->isMemberOf($coordinator)) {
-            echo 'Eorror';
-        }
+        $this->checkPermssion($userRole);
         
-        $role = $this->roleRepo->find($command->role_id);
-        $user->addRole($role, $coordinator);
+        $userRole->save();
     }
 
-    private function getAdminRole()
+    private function checkPermssion($userRole)
     {
-        return $this->roleRepo->get('admin');
+        if ($this->userRepo->authUser()->cannot('update', $userRole)) {
+            throw new \Exception('No Permission');
+        }
     }
 }

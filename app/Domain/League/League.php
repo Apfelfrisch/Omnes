@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\League;
 
+use App\Service\Acl\User\User;
 use Illuminate\Database\Eloquent\Model;
-use App\Domain\User\User;
 
-class Coordinator extends Model
+class League extends Model
 {
     public function users()
     {

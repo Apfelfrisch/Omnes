@@ -8,12 +8,12 @@ class AddRoleToUserCommand
 {
     public $userId;
     public $roleId;
-    public $coordinatorId;
+    public $leagueId;
     
-    public function __construct($userId, $roleId, $coordinatorId)
+    public function __construct($userId, $roleId, $leagueId)
     {
         $this->user_id = $userId;
         $this->role_id = $roleId;
-        $this->coordinator_id = $coordinatorId;
+        $this->league_id = $leagueId;
     }
 }

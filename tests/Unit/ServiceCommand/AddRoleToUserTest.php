@@ -4,38 +4,46 @@ namespace Test\Unit\ServiceCommand;
 
 use TestCase;
 use Mockery as m;
+use App\Service\Acl\User\User;
+use App\Service\Acl\Role\Role;
+use App\Domain\League\League;
+use App\Domain\League\LeagueRepository;
 use App\Service\Bus\Command\AddRoleToUserCommand;
 use App\Service\Bus\Handler\AddRoleToUserHandler;
-use App\Domain\User\Repositories\UserRepository;
-use App\Domain\User\Repositories\RoleRepository;
-use App\Domain\Repositories\CoordinatorRepository;
-use App\Domain\User\User;
-use App\Domain\User\Role;
-use App\Domain\Coordinator;
+use App\Service\Acl\Repositories\UserRepository;
+use App\Service\Acl\Repositories\RoleRepository;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AddRoleToUserTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /** @test */
     public function it_adds_a_a_role_to_a_user()
     {
         $command = new AddRoleToUserCommand(1, 2, 3);
+        $leagueRepo = $this->makeLeagueRepoMock(3);
 
         $hanlder = new AddRoleToUserHandler(
-            $this->makeUserRepoMock(1), 
+            $this->makeUserRepoMock(1, $leagueRepo), 
             $this->makeRoleRepoMock(2),
-            $this->makeCoordinatorRepoMock(3)
+            $leagueRepo
         );
 
         $hanlder->handle($command);
     }
 
-    private function makeUserRepoMock($id)
+    private function makeUserRepoMock($id, $leagueRepo)
     {
-        $user = new User;
-        $user->id = $id;
+        $user = factory(User::class)->create();
+        $user->join($leagueRepo->find(1));
 
-        return m::mock(UserRepository::class, function($mock) use ($user) {
+        $authUser = new User;
+        $authUser->id = $id;
+
+        return m::mock(UserRepository::class, function($mock) use ($user, $authUser) {
             $mock->shouldReceive('find')->andReturn($user);
+            $mock->shouldReceive('authUser')->andReturn($authUser);
         });
     }
     
@@ -45,17 +53,19 @@ class AddRoleToUserTest extends TestCase
         $role->id = $id;
 
         return m::mock(RoleRepository::class, function($mock) use ($role) {
+            $mock->shouldReceive('get')->andReturn($role);
             $mock->shouldReceive('find')->andReturn($role);
         });
     }
     
-    private function makeCoordinatorRepoMock($id)
+    private function makeLeagueRepoMock($id)
     {
-        $coordinator = new Coordinator;
-        $coordinator->id = $id;
+        $league = new League;
+        $league->id = $id;
+        $league->name = 'Name';
 
-        return m::mock(CoordinatorRepository::class, function($mock) use ($coordinator) {
-            $mock->shouldReceive('find')->andReturn($coordinator);
+        return m::mock(LeagueRepository::class, function($mock) use ($league) {
+            $mock->shouldReceive('find')->andReturn($league);
         });
     }
 }

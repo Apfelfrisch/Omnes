@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\User\Repositories;
+namespace App\Service\Acl\Repositories;
 
 use Auth;
-use App\Domain\User\User;
+use App\Service\Acl\User\User;
 
 class UserRepository
 {

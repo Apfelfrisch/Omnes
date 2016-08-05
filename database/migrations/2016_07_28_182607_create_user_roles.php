@@ -16,9 +16,9 @@ class CreateUserRoles extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
-            $table->integer('coordinator_id')->unsigned();
+            $table->integer('league_id')->unsigned();
             $table->timestamps();
-            $table->unique(['user_id', 'role_id', 'coordinator_id']);
+            $table->unique(['user_id', 'role_id', 'league_id']);
         });
     }
 

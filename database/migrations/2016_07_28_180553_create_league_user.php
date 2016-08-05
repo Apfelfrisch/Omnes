@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCoordinatorUser extends Migration
+class CreateLeagueUser extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class CreateCoordinatorUser extends Migration
      */
     public function up()
     {
-        Schema::create('coordinator_user', function (Blueprint $table) {
-            $table->integer('coordinator_id')->unsigned();
+        Schema::create('league_user', function (Blueprint $table) {
+            $table->integer('league_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->primary(['coordinator_id', 'user_id']);
+            $table->primary(['league_id', 'user_id']);
         });
     }
 
@@ -26,6 +26,6 @@ class CreateCoordinatorUser extends Migration
      */
     public function down()
     {
-        Schema::drop('coordinator_user');
+        Schema::drop('league_user');
     }
 }
