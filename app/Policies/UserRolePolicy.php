@@ -23,7 +23,7 @@ class UserRolePolicy
 
     public function save($user, $userRole)
     {
-        $allowedRoles = $this->roleRepository->getAllWithPermission('save_user_role');
+        $allowedRoles = $this->roleRepository->getAllWithPermission('change_user_role');
 
         return $user->hasRoleFor($allowedRoles, $userRole->league);
     }
