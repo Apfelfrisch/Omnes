@@ -27,16 +27,21 @@ class User extends Authenticatable
 
     public function join(League $league)
     {
-        return $this->leagues()->save($league);
+        $this->leagues()->save($league);
+
+        return $this;
     }
 
-    public function roles(League $league = null)
+    public function roles()
     {
-        $query = $this->hasManyThrough(Role::class, UserRole::class, 'role_id', 'id');
-        if ($league) {
-            $query->where(['league_id' => $league->id, 'user_id' => $this->id]);
-        }
-        return $query->get();
+        return $this->hasManyThrough(Role::class, UserRole::class, 'role_id', 'id');
+    }
+
+    public function roleFor(League $league)
+    {
+        return $this->hasManyThrough(Role::class, UserRole::class, 'role_id', 'id')
+            ->where(['league_id' => $league->id, 'user_id' => $this->id])
+            ->first();
     }
 
     public function isMemberOf(League $league = null)
@@ -49,15 +54,25 @@ class User extends Authenticatable
 
     public function hasRoleFor($role, League $league = null)
     {
-        return $league && $this->hasRole($role, $league);
+        if ($league == null) {
+            return false;
+        }
+        if (null == $role = $this->roleFor($league)) {
+            return false;
+        }
+        if ($role instanceof Collection) {
+            return !! $role->where($this->roleFor($league)->id)->count();
+        }
+
+        return $role->id == $this->roleFor($league)->id;
     }
 
-    public function hasRole($role, League $league = null)
+    public function hasRole($role)
     {
         if ($role instanceof Collection) {
-            return !! $role->intersect($this->roles($league))->count();
+            return !! $role->intersect($this->roles)->count();
         }
-        return !! $this->roles($league)->find($role->id);
+        return !! $this->roles->where('id', $role->id);
     }
 }
 

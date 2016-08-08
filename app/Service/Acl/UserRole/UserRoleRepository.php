@@ -10,4 +10,9 @@ class UserRoleRepository
     {
         return UserRole::find($id);
     }
+
+    public function firstOrCreate($properties)
+    {
+        return UserRole::firstOrCreate($properties);
+    }
 }

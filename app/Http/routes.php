@@ -13,5 +13,6 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController@index');
+    Route::resource('/my/users', 'ControlCenter\User');
 });
 

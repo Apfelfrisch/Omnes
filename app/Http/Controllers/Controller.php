@@ -13,10 +13,12 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, ValidatesRequests;
 
+    protected $authUser;
     protected $commandBus;
 
     public function __construct()
     {
         $this->commandBus = app(CommandBus::class);
+        $this->authUser = auth()->user();
     }
 }

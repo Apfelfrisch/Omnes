@@ -26,10 +26,6 @@ class UserRoleUpdateTest extends TestCase
 
         $hanlder = new UserRoleUpdateHandler($this->makeGateWichAllowsPermission(), $userRoleRepo);
         $hanlder->handle(new UserRoleUpdateCommand($userRoleId, $rolePoperties));
-        
-        $this->assertEquals($rolePoperties['user_id'], $userRole->user_id);
-        $this->assertEquals($rolePoperties['role_id'], $userRole->role_id);
-        $this->assertEquals($rolePoperties['league_id'], $userRole->league_id);
     }
 
     /** @test */

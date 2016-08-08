@@ -5,25 +5,27 @@ namespace App\Service\Bus\Handler;
 use App\Service\Acl\UserRole\UserRole;
 use App\Exceptions\NoPermissionExpection;
 use Illuminate\Contracts\Auth\Access\Gate;
+use App\Service\Acl\UserRole\UserRoleRepository;
 use App\Service\Bus\Command\UserRoleCreateCommand;
 
 class UserRoleCreateHandler
 {
     private $gate;
+    private $userRoleRepo;
     
-    public function __construct(Gate $gate, UserRole $userRole)
+    public function __construct(Gate $gate, UserRoleRepository $userRoleRepo)
     {
         $this->gate = $gate;
-        $this->userRole = $userRole;
+        $this->userRoleRepo = $userRoleRepo;
     }
 
     public function handle(UserRoleCreateCommand $command)
     {
-        $this->userRole->fill($command->properties);
-
-        $this->checkPermssion($this->userRole);
+        $userRole = $this->userRoleRepo->firstOrCreate($command->properties);
+        $userRole->fill($command->properties);
+        $this->checkPermssion($userRole);
         
-        $this->userRole->save();
+        $userRole->save();
     }
 
     private function checkPermssion($userRole)

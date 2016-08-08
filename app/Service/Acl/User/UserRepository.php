@@ -3,6 +3,7 @@
 namespace App\Service\Acl\User;
 
 use Auth;
+use App\Domain\League\League;
 
 class UserRepository
 {
