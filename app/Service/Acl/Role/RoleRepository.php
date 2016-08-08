@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Service\Acl\Repositories;
-
-use App\Service\Acl\Role\Role;
+namespace App\Service\Acl\Role;
 
 class RoleRepository
 {

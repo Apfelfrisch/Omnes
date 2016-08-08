@@ -30,11 +30,6 @@ class User extends Authenticatable
         return $this->leagues()->save($league);
     }
 
-    public function rolesFor(League $league)
-    {
-        return $this->roles($league);
-    }
-
     public function roles(League $league = null)
     {
         $query = $this->hasManyThrough(Role::class, UserRole::class, 'role_id', 'id');
@@ -44,14 +39,17 @@ class User extends Authenticatable
         return $query->get();
     }
 
-    public function isMemberOf(League $league)
+    public function isMemberOf(League $league = null)
     {
+        if ($league === null) {
+            return false;
+        }
         return !! $this->leagues()->find($league->id);
     }
 
-    public function hasRoleFor($role, League $league)
+    public function hasRoleFor($role, League $league = null)
     {
-        return $this->hasRole($role, $league);
+        return $league && $this->hasRole($role, $league);
     }
 
     public function hasRole($role, League $league = null)
@@ -62,3 +60,4 @@ class User extends Authenticatable
         return !! $this->roles($league)->find($role->id);
     }
 }
+

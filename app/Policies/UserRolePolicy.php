@@ -3,9 +3,9 @@
 namespace App\Policies;
 
 use App\Domain\League\LeagueRepository;
+use App\Service\Acl\Role\RoleRepository;
+use App\Service\Acl\User\UserRepository;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Service\Acl\Repositories\RoleRepository;
-use App\Service\Acl\Repositories\UserRepository;
 
 class UserRolePolicy
 {
@@ -21,14 +21,10 @@ class UserRolePolicy
         $this->roleRepository = $roleRepository;
     }
 
-    public function update($user, $userRole)
+    public function save($user, $userRole)
     {
-        if (!$userRole->user->isMemberOf($userRole->league)) {
-            return false;
-        }
+        $allowedRoles = $this->roleRepository->getAllWithPermission('save_user_role');
 
-        $allowedRoles = $this->roleRepository->getAllWithPermission('update_user_role');
-
-        return $user->hasRole($allowedRoles, $userRole->league);
+        return $user->hasRoleFor($allowedRoles, $userRole->league);
     }
 }

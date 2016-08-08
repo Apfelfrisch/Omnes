@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Service\Bus\Handler\AddRoleToUserHandler;
+use App\Service\Bus\Handler\UserRoleCreateHandler;
 
 class UserRoleController.php extends Controller
 {
@@ -38,7 +38,7 @@ class UserRoleController.php extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->commandBus->handle(new AddRoleToUserHandler($request));
+        $response = $this->commandBus->handle(new UserRoleCreateHandler($request));
     }
 
     /**

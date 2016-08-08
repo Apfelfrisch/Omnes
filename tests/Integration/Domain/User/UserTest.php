@@ -8,23 +8,11 @@ use App\Service\Acl\Role\Role;
 use App\Domain\League\League;
 use App\Service\Acl\Permission\Permission;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Service\Acl\UserRole\UserRole;
 
 class UserTest extends TestCase
 {
     use DatabaseTransactions;
-
-    /** @test */
-    public function it_adds_a_to_a_role()
-    {
-        $role = factory(Role::class)->create();
-        $league = factory(League::class)->create();
-        $user = factory(User::class)->create();
-
-        $user->join($league);
-        $user->addRole($role, $league);
-        
-        $this->assertEquals($role->id, $user->rolesFor($league)->first()->id);
-    }
 
     /** @test */
     public function it_joins_a_league()
@@ -41,15 +29,20 @@ class UserTest extends TestCase
     public function it_checks_of_the_given_controller_role_is_associated()
     {
         $permissionRoles = factory(Role::class, 2)->create();
-        $forbiddenRoles = factory(Role::class, 2)->create();
+        $forbiddenRoles = factory(Role::class, 2)->make();
 
         $league = factory(League::class)->create();
-        $foreignLeague = factory(League::class)->create();
+        $foreignLeague = factory(League::class)->make();
 
         $user = factory(User::class)->create();
-        
         $user->join($league);
-        $user->addRole($permissionRoles[0], $league);
+
+        $userRole = new UserRole([
+            'user_id' => $user->id,
+            'league_id' => $league->id,
+            'role_id' => $permissionRoles[0]->id,
+        ]);
+        $userRole->save();
 
         $this->assertTrue($user->hasRoleFor($permissionRoles, $league));
         $this->assertTrue($user->hasRole($permissionRoles[0]));
