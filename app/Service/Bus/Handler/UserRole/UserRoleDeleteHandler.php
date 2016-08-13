@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service\Bus\Handler;
+namespace App\Service\Bus\Handler\UserRole;
 
 use App\Exceptions\NoPermissionExpection;
 use Illuminate\Contracts\Auth\Access\Gate;
 use App\Service\Acl\UserRole\UserRoleRepository;
-use App\Service\Bus\Command\UserRoleUpdateCommand;
+use App\Service\Bus\Command\UserRole\UserRoleDeleteCommand;
 
-class UserRoleUpdateHandler
+class UserRoleDeleteHandler
 {
     private $gate;
     private $userRoleRepo;
@@ -18,15 +18,13 @@ class UserRoleUpdateHandler
         $this->userRoleRepo = $userRoleRepo;
     }
 
-    public function handle(UserRoleUpdateCommand $command)
+    public function handle(UserRoleDeleteCommand $command)
     {
         $userRole = $this->userRoleRepo->find($command->id);
 
         $this->checkPermssion($userRole);
         
-        $userRole->fill($command->properties);
-
-        $userRole->save();
+        $userRole->delete();
     }
 
     private function checkPermssion($userRole)

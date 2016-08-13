@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Service\Bus\Handler;
+namespace App\Service\Bus\Handler\UserRole;
 
-use App\Service\Acl\UserRole\UserRole;
 use App\Exceptions\NoPermissionExpection;
 use Illuminate\Contracts\Auth\Access\Gate;
 use App\Service\Acl\UserRole\UserRoleRepository;
-use App\Service\Bus\Command\UserRoleCreateCommand;
+use App\Service\Bus\Command\UserRole\UserRoleUpdateCommand;
 
-class UserRoleCreateHandler
+class UserRoleUpdateHandler
 {
     private $gate;
     private $userRoleRepo;
@@ -19,12 +18,14 @@ class UserRoleCreateHandler
         $this->userRoleRepo = $userRoleRepo;
     }
 
-    public function handle(UserRoleCreateCommand $command)
+    public function handle(UserRoleUpdateCommand $command)
     {
-        $userRole = $this->userRoleRepo->firstOrCreate($command->properties);
-        $userRole->fill($command->properties);
+        $userRole = $this->userRoleRepo->find($command->id);
+
         $this->checkPermssion($userRole);
         
+        $userRole->fill($command->properties);
+
         $userRole->save();
     }
 

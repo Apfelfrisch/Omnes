@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Bus\Command;
+namespace App\Service\Bus\Command\UserRole;
 
 use Illuminate\Http\Request;
 

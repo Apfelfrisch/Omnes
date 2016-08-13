@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Service\Acl\Role\RoleRepository;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserRolePolicy
+class PublishArticlePolicy
 {
     use HandlesAuthorization;
 
@@ -14,10 +14,10 @@ class UserRolePolicy
         $this->roleRepository = $roleRepository;
     }
 
-    public function save($user, $userRole)
+    public function save($user, $activity)
     {
-        $allowedRoles = $this->roleRepository->getAllWithPermission('change_user_role');
+        $allowedRoles = $this->roleRepository->getAllWithPermission('publish_article');
 
-        return $user->hasRoleFor($allowedRoles, $userRole->league);
+        return $user->hasRoleFor($allowedRoles, $activity->league);
     }
 }

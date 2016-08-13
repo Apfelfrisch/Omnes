@@ -1,5 +1,8 @@
 <?php
 
+use Mockery as m;
+use Illuminate\Contracts\Auth\Access\Gate;
+
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     /**
@@ -21,5 +24,23 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    protected function makeGateWichAllowsPermission()
+    {
+        return $this->makeGate($allow = true);
+    }
+
+    protected function makeGateWichDeniesPermission()
+    {
+        return $this->makeGate($allow = false);
+    }
+
+    protected function makeGate($allow)
+    {
+        return m::mock(Gate::class)
+            ->shouldReceive('denies')->andReturn($allow == false)
+            ->shouldReceive('allows')->andReturn($allow)
+            ->getMock();
     }
 }

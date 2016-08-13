@@ -11,6 +11,11 @@ class LeagueRepository
         return League::find($id);
     }
 
+    public function findOrFail($id)
+    {
+        return League::findOrFail($id);
+    }
+
     public function allForUser($user)
     {
         return League::with('users')

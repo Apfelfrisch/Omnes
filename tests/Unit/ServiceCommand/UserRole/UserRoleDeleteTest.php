@@ -6,10 +6,9 @@ use TestCase;
 use Mockery as m;
 use App\Service\Acl\UserRole\UserRole;
 use App\Exceptions\NoPermissionExpection;
-use Illuminate\Contracts\Auth\Access\Gate;
 use App\Service\Acl\UserRole\UserRoleRepository;
-use App\Service\Bus\Command\UserRoleDeleteCommand;
-use App\Service\Bus\Handler\UserRoleDeleteHandler;
+use App\Service\Bus\Command\UserRole\UserRoleDeleteCommand;
+use App\Service\Bus\Handler\UserRole\UserRoleDeleteHandler;
 
 class UserRoleDeleteTest extends TestCase
 {
@@ -49,24 +48,6 @@ class UserRoleDeleteTest extends TestCase
         return m::mock(UserRoleRepository::class)
             ->shouldReceive('find')
             ->andReturn($userRole)
-            ->getMock();
-    }
-
-    private function makeGateWichAllowsPermission()
-    {
-        return $this->makeGate($allow = true);
-    }
-
-    private function makeGateWichDeniesPermission()
-    {
-        return $this->makeGate($allow = false);
-    }
-
-    private function makeGate($allow)
-    {
-        return m::mock(Gate::class)
-            ->shouldReceive('denies')->andReturn($allow == false)
-            ->shouldReceive('allows')->andReturn($allow)
             ->getMock();
     }
 }
