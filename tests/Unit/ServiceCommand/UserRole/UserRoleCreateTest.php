@@ -61,5 +61,4 @@ class UserRoleCreateTest extends TestCase
             ->andReturn($userRole)
             ->getMock();
     }
-
 }

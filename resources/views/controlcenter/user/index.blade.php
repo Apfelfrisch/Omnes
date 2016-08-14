@@ -23,6 +23,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->roleFor($league) ? $user->roleFor($league)->name : '' }}</td>
+                        <td>@include('controlcenter.user.partials.delete_user')</td>
                     </tr>
                     @endforeach
                 </tbody>

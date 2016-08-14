@@ -1,14 +1,14 @@
 <?php
 
-namespace Test\Integration\Domain\User;
+namespace Test\Integration\Service\Acl;
 
 use TestCase;
+use App\Domain\League\League;
 use App\Service\Acl\User\User;
 use App\Service\Acl\Role\Role;
-use App\Domain\League\League;
+use App\Service\Acl\UserRole\UserRole;
 use App\Service\Acl\Permission\Permission;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Service\Acl\UserRole\UserRole;
 
 class UserTest extends TestCase
 {

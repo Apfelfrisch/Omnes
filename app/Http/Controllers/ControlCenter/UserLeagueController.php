@@ -6,18 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Domain\League\LeagueRepository;
+use App\Service\Bus\Command\League\LeaveLeagueCommand;
 
-class User extends Controller
+class UserLeagueController extends Controller
 {
-    protected $leagueRepo;
-    
-    public function __construct(LeagueRepository $leagueRepo)
-    {
-        parent::__construct();
-        $this->leagueRepo = $leagueRepo;
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -25,9 +17,7 @@ class User extends Controller
      */
     public function index()
     {
-        $leagues = $this->leagueRepo->allForUser($this->authUser);
-
-        return view('controlcenter.user.index', compact('leagues'));
+        //
     }
 
     /**
@@ -88,11 +78,14 @@ class User extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $userId
+     * @param  int  $leagueId
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($userId, $leagueId)
     {
-        //
+        $this->commandBus->handle(new LeaveLeagueCommand($userId, $leagueId));
+
+        return back();
     }
 }

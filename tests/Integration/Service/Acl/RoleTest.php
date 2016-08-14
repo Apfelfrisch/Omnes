@@ -1,13 +1,13 @@
 <?php
 
-namespace Test\Integration\Domain\User;
+namespace Test\Integration\Service\Acl;
 
 use TestCase;
 use App\Service\Acl\Role\Role;
 use App\Service\Acl\Permission\Permission;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class PermissionTest extends TestCase
+class RoleTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -19,6 +19,6 @@ class PermissionTest extends TestCase
 
         $role->givePermission($permission);
 
-        $this->assertEquals($role->id, $permission->roles->first()->id);
+        $this->assertEquals($permission->id, $role->permissions->first()->id);
     }
 }

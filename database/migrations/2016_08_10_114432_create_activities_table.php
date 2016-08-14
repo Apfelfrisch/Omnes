@@ -14,9 +14,9 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('league_id')->unsigned()->unique();
-            $table->integer('adress_id')->unsigned()->unique();
-            $table->integer('contact_id')->unsigned()->unique();
+            $table->integer('league_id')->unsigned();
+            $table->integer('adress_id')->unsigned();
+            $table->integer('contact_id')->unsigned();
             $table->text('description')->nullable();
             $table->timestamps();
         });

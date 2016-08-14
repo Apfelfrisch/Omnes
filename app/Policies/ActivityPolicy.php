@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Service\Acl\Role\RoleRepository;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PublishArticlePolicy
+class ActivityPolicy
 {
     use HandlesAuthorization;
 

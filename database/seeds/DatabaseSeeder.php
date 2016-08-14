@@ -6,6 +6,7 @@ use App\Domain\League\League;
 use App\Service\Acl\User\User;
 use App\Service\Acl\UserRole\UserRole;
 use App\Service\Acl\Permission\Permission;
+use App\Domain\Activity\Activity;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,6 +15,15 @@ class DatabaseSeeder extends Seeder
     {
         Artisan::call('migrate:refresh');
         $this->seedAcl();
+        $this->seedActivities();
+    }
+
+    private function seedActivities()
+    {
+        factory(Activity::class, 10)->create(['league_id' => $this->exampleLeague()->id]);
+        factory(League::class, 5)->create()->each(function($league) {
+            factory(Activity::class, 5)->create(['league_id' => $league->id]);
+        });
     }
 
     private function seedAcl()

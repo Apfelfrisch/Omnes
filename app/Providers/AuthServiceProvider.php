@@ -14,7 +14,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Service\Acl\UserRole\UserRole' => 'App\Policies\UserRolePolicy'
+        \App\Domain\League\League::class => \App\Policies\LeaguePolicy::class,
+        \App\Domain\Activity\Activity::class => \App\Policies\ActivityPolicy::class,
+        \App\Service\Acl\UserRole\UserRole::class => \App\Policies\UserRolePolicy::class
     ];
 
     /**

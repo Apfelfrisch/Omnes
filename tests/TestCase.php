@@ -38,7 +38,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     protected function makeGate($allow)
     {
-        return m::mock(Gate::class)
+        return m::spy(Gate::class)
             ->shouldReceive('denies')->andReturn($allow == false)
             ->shouldReceive('allows')->andReturn($allow)
             ->getMock();

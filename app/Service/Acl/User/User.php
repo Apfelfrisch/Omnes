@@ -8,7 +8,6 @@ use App\Service\Acl\Role\Role;
 use App\Service\Acl\UserRole\UserRole;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Service\Acl\Permission\Permission;
 
 class User extends Authenticatable
 {
@@ -23,13 +22,6 @@ class User extends Authenticatable
     public function leagues()
     {
         return $this->belongsToMany(League::class);
-    }
-
-    public function join(League $league)
-    {
-        $this->leagues()->save($league);
-
-        return $this;
     }
 
     public function roles()
@@ -74,5 +66,28 @@ class User extends Authenticatable
         }
         return !! $this->roles->where('id', $role->id);
     }
-}
 
+    public function join(League $league)
+    {
+        $this->leagues()->save($league);
+
+        return $this;
+    }
+
+    public function leave(League $league = null)
+    {
+        if ($league === null) {
+            return $this;
+        }
+
+        $this->userRoles()->where('league_id', $league->id)->delete();
+        $this->leagues()->detach($league->id);
+
+        return $this;
+    }
+
+    protected function userRoles()
+    {
+        return $this->hasMany(UserRole::class);
+    }
+}

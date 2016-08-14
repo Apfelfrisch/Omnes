@@ -28,7 +28,7 @@ class PublishActivityTest extends TestCase
         $description = Faker::create()->text;
         
         $handler = new PublishActivityHandler(
-            $this->makeGateWichAllowsPermission(), 
+            $gate = $this->makeGateWichAllowsPermission(), 
             $activityRepo = $this->getActivityRepoMock($activity = $this->getActivity()), 
             $this->leagueRepoMock()
         );
@@ -37,6 +37,7 @@ class PublishActivityTest extends TestCase
         $activity->shouldHaveReceived('addLeague')->with($this->getLeague())->once();
         $activity->shouldHaveReceived('setAdress')->with($this->getAdress())->once();
         $activity->shouldHaveReceived('setContact')->with($this->getContact())->once();
+        $gate->shouldHaveReceived('denies')->with('save', $activity)->once();
         $activityRepo->shouldHaveReceived('persist')->once();
     }
 
@@ -49,7 +50,7 @@ class PublishActivityTest extends TestCase
         $description = Faker::create()->text;
         
         $handler = new PublishActivityHandler(
-            $this->makeGateWichDeniesPermission(), 
+            $gate = $this->makeGateWichDeniesPermission(), 
             $activityRepo = $this->getActivityRepoMock($activity = $this->getActivity()), 
             $this->leagueRepoMock()
         );
@@ -60,6 +61,7 @@ class PublishActivityTest extends TestCase
         $activity->shouldHaveReceived('addLeague')->with($this->getLeague())->once();
         $activity->shouldHaveReceived('setAdress')->never();
         $activity->shouldHaveReceived('setContact')->never();
+        $gate->shouldHaveReceived('denies')->with('save', $activity)->once();
         $activityRepo->shouldHaveReceived('persist')->never();
     }
 
